@@ -1,0 +1,32 @@
+# Warter et al.
+
+# cutadapt script used to process raw reads (paired) for 16S data.
+# between 0-5 heterogeneity spacers (N) were used
+
+while IFS= read -r i; do
+  cutadapt -g ^GTGYCAGCMGCCGCGGTAA \
+           -G ^CCGYCAATTYMTTTRAGTTT \
+           -g ^NGTGYCAGCMGCCGCGGTAA \
+           -G ^NCCGYCAATTYMTTTRAGTTT \
+           -g ^NNGTGYCAGCMGCCGCGGTAA\
+           -G ^NNCCGYCAATTYMTTTRAGTTT \
+           -g ^NNNGTGYCAGCMGCCGCGGTAA\
+           -G ^NNNCCGYCAATTYMTTTRAGTTT \
+           -g ^NNNNGTGYCAGCMGCCGCGGTAA \
+           -G ^NNNNCCGYCAATTYMTTTRAGTTT \
+           -g ^NNNNNGTGYCAGCMGCCGCGGTAA \
+           -G ^NNNNNCCGYCAATTYMTTTRAGTTT \
+           -o trimmed/${i}_R1.fq.gz \
+           -p trimmed/${i}_R2.fq.gz \
+           ${i}_L001_R1_001.fastq.gz \
+           ${i}_L001_R2_001.fastq.gz
+done < "libs.txt" > nshift_trim_report.txt
+
+# where libs.txt is a file containing the library prefixes
+
+# example:
+
+# S001-Spree_0001
+# S002-Spree_0002
+# S003-Spree_0003
+# etc
